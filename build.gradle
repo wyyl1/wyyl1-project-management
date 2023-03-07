@@ -39,6 +39,8 @@ dependencies {
     compileOnly 'org.apache.camel:camel-spring-boot-dependencies:3.0.0-M4'
 
     testImplementation 'io.quarkus:quarkus-junit5:2.16.4.Final'
+
+    implementation 'com.alibaba.fastjson2:fastjson2:2.0.24'
 }
 
 tasks.named('test') {

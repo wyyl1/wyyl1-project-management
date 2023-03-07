@@ -10,7 +10,8 @@ public class EntityGeneratorTests {
 
     static final String url = "jdbc:mysql://localhost:3306/project-management?useUnicode=true&characterEncoding=utf8&serverTimezone=GMT%2B8&allowMultiQueries=true";
 
-    static final String MODEL = "mgt";
+    // org.platform,proj.function
+    static final String MODEL = "proj.function";
 
     @Test
     public void generate() {
@@ -21,7 +22,7 @@ public class EntityGeneratorTests {
             /* 数据库连接信息 **/
             url = url, username = "root", password = "root",
             /* Entity类parent package路径 **/
-            basePack = "com.wyyl1.pm.one." + MODEL,
+            basePack = "com.wyyl1.pm.adapter.out.persistence." + MODEL,
             /* Entity代码源目录 **/
             srcDir = "src/main/java/",
             /* Dao代码源目录 **/
@@ -31,7 +32,7 @@ public class EntityGeneratorTests {
             /* 需要生成文件的表 ( 表名称:对应的Entity名称 ) **/
             tables = @Table(
                     value = {
-                            "org:Org"
+                            "function:Function"
                     },
                     columns = @Column(value = "gender_man", javaType = Boolean.class)
             ),
