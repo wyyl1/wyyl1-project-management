@@ -1,6 +1,6 @@
 package com.wyyl1.pm.adapter.out.in.restful.proj.function;
 
-import com.wyyl1.pm.adapter.out.in.restful.proj.function.form.FunctionSaveForm;
+import com.wyyl1.pm.adapter.in.restful.proj.function.form.FunctionSaveForm;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;

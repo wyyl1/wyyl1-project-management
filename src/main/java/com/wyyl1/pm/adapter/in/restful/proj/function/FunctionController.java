@@ -1,6 +1,6 @@
-package com.wyyl1.pm.adapter.out.in.restful.proj.function;
+package com.wyyl1.pm.adapter.in.restful.proj.function;
 
-import com.wyyl1.pm.adapter.out.in.restful.proj.function.form.FunctionSaveForm;
+import com.wyyl1.pm.adapter.in.restful.proj.function.form.FunctionSaveForm;
 import com.wyyl1.pm.application.proj.function.FunctionService;
 import com.wyyl1.pm.common.util.JsonFormatter;
 import com.wyyl1.pm.common.util.Time;
