@@ -41,6 +41,7 @@ dependencies {
     testImplementation 'io.quarkus:quarkus-junit5:2.16.4.Final'
 
     implementation 'com.alibaba.fastjson2:fastjson2:2.0.24'
+    implementation 'com.google.guava:guava:31.1-jre'
 }
 
 tasks.named('test') {

@@ -1,4 +1,4 @@
-package com.wyyl1.pm.domain.proj.function.dto;
+package com.wyyl1.pm.domain.proj.function.pojo.dto;
 
 import lombok.*;
 

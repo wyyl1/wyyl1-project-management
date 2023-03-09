@@ -1,6 +1,10 @@
 package com.wyyl1.pm.common.page;
 
+import com.wyyl1.pm.common.util.AssertUtils;
+
 import java.util.List;
+
+import static com.google.common.base.Preconditions.checkNotNull;
 
 public class Page<T> {
 
@@ -16,6 +20,7 @@ public class Page<T> {
         this.pageNum = pageNum;
         this.pageSize = pageSize;
         this.recordTotal = recordTotal;
+        this.dataList = List.of();
         //计算总页数和开始索引、结束索引
         if (recordTotal % pageSize == 0) {
             this.pageTotal = recordTotal / pageSize;
@@ -23,9 +28,7 @@ public class Page<T> {
             this.pageTotal = recordTotal / pageSize + 1;
         }
 
-        if (invalidPageNum()) {
-            this.pageNum = 1;
-        }
+        AssertUtils.isTrue(validPageNum(), () -> "无效的页码：" + pageNum);
 
         this.offset = 0;
         this.rowCount = 0;
@@ -37,6 +40,12 @@ public class Page<T> {
 
     public static <T> Page<T> of(int pageNum, int pageSize, int recordTotal) {
         return new Page<>(pageNum, pageSize, recordTotal);
+    }
+
+    public static <T> Page<T> of(PageQuery pageQuery, int recordTotal) {
+        checkNotNull(pageQuery);
+
+        return new Page<>(pageQuery.pageNum(), pageQuery.pageSize(), recordTotal);
     }
 
     public int pageNum() {
@@ -72,7 +81,10 @@ public class Page<T> {
         return dataList;
     }
 
-    private boolean invalidPageNum() {
-        return pageNum < 1 || pageNum > pageTotal;
+    private boolean validPageNum() {
+        if (pageNum == 1) {
+            return true;
+        }
+        return pageNum > 0 && pageNum <= pageTotal;
     }
 }

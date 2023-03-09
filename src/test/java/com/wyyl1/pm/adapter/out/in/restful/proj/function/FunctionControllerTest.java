@@ -1,17 +1,24 @@
 package com.wyyl1.pm.adapter.out.in.restful.proj.function;
 
 import com.wyyl1.pm.adapter.in.restful.proj.function.form.FunctionSaveForm;
+import com.wyyl1.pm.adapter.out.persistence.proj.function.FunctionCleaner;
+import com.wyyl1.pm.adapter.out.persistence.proj.function.mapper.FunctionMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.test.web.servlet.MvcResult;
 import test.BaseTest;
 
+import javax.annotation.Resource;
+
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 class FunctionControllerTest extends BaseTest {
+
+    @Resource
+    private FunctionMapper mapper;
 
     @DisplayName("保存功能")
     @Nested
@@ -25,10 +32,10 @@ class FunctionControllerTest extends BaseTest {
                     .andDo(print()).andExpect(status().isOk())
                     .andReturn();
 
-            assertThat(Integer.parseInt(result.getResponse().getContentAsString())).isGreaterThan(0);
+            assertThat(result.getResponse().getContentAsString()).isEqualTo("ok");
+
+            FunctionCleaner.of(mapper).cleanLastInsert();
         }
-
-
 
         private FunctionSaveForm createForm() {
             FunctionSaveForm form = new FunctionSaveForm();
