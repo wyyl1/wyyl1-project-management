@@ -14,6 +14,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @RestController
 @AllArgsConstructor
 @RequestMapping("/function")
@@ -38,7 +40,7 @@ public class FunctionController {
 
     @GetMapping("/page")
     @ResponseBody
-    public RestfulPage<Function> page(FunctionPageQuery pageQuery) {
+    public RestfulPage<Function> page(@Valid FunctionPageQuery pageQuery) {
         FunctionListQuery functionListQuery = new FunctionListQuery();
         BeanUtils.copyProperties(pageQuery, functionListQuery);
 

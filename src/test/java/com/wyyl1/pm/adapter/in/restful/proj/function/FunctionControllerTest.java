@@ -1,12 +1,18 @@
 package com.wyyl1.pm.adapter.in.restful.proj.function;
 
+import com.alibaba.fastjson2.JSON;
+import com.alibaba.fastjson2.JSONObject;
+import com.wyyl1.pm.adapter.in.restful.common.RestfulPage;
 import com.wyyl1.pm.adapter.in.restful.proj.function.pojo.form.FunctionSaveForm;
 import com.wyyl1.pm.adapter.in.restful.proj.function.pojo.query.FunctionPageQuery;
 import com.wyyl1.pm.adapter.out.persistence.proj.function.FunctionCleaner;
 import com.wyyl1.pm.adapter.out.persistence.proj.function.mapper.FunctionMapper;
+import com.wyyl1.pm.domain.proj.function.pojo.dto.Function;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.springframework.test.web.servlet.MvcResult;
 import test.BaseTest;
 
@@ -14,6 +20,7 @@ import javax.annotation.Resource;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 class FunctionControllerTest extends BaseTest {
@@ -62,9 +69,9 @@ class FunctionControllerTest extends BaseTest {
     class PageTest {
         private final String path = "/function/page";
 
-        @DisplayName("查询成功")
+        @DisplayName("没有查询条件返回成功")
         @Test
-        void page_success() throws Exception {
+        void return_success_when_no_query_condition() throws Exception {
             FunctionPageQuery pageQuery = new FunctionPageQuery();
             pageQuery.setPageNum(1);
             pageQuery.setPageSize(10);
@@ -73,6 +80,34 @@ class FunctionControllerTest extends BaseTest {
             MvcResult result = mockMvc.perform(getFor(sendUrl))
                     .andDo(print()).andExpect(status().isOk())
                     .andReturn();
+
+            RestfulPage<JSONObject> page = JSON.parseObject(result.getResponse().getContentAsString(), RestfulPage.class);
+
+            assertThat(page.getPageTotal()).isEqualTo(1);
+            assertThat(page.getRecordTotal()).isEqualTo(9);
+            assertThat(page.getDataList().size()).isEqualTo(9);
+
+            for (JSONObject json : page.getDataList()) {
+                Function function = JSON.parseObject(json.toString(), Function.class);
+                assertThat(function.getId()).isNotNull();
+                assertThat(function.getName()).isNotBlank();
+            }
+        }
+
+        @DisplayName("使用无效的查询条件返回错误提示")
+        @ParameterizedTest
+        @CsvSource({
+                "0",
+        })
+        void return_error_when_invalid_query_condition(Integer pageNum) throws Exception {
+            FunctionPageQuery pageQuery = new FunctionPageQuery();
+            pageQuery.setPageNum(pageNum);
+            pageQuery.setPageSize(10);
+
+            String sendUrl = path + "?pageNum=" + pageQuery.getPageNum() + "&pageSize=" + pageQuery.getPageSize();
+            mockMvc.perform(getFor(sendUrl))
+                    .andDo(print()).andExpect(status().isBadRequest())
+                    .andExpect(content().string("页码最小值为1"));
         }
     }
 

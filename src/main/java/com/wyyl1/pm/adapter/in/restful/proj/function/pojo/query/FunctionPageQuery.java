@@ -13,7 +13,7 @@ public class FunctionPageQuery {
     private Integer platformId;
 
     @NotNull
-    @Min(value = 1)
+    @Min(value = 1, message = "页码最小值为1")
     private Integer pageNum;
 
     @NotNull
