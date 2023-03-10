@@ -6,6 +6,9 @@ spring:
     username: root
     password: "root"
 
-mybatis:
-  configuration:
-    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+logging:
+  config: classpath:log4j2-local.xml
+
+#mybatis:
+#  configuration:
+#    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl

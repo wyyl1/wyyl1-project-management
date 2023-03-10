@@ -10,6 +10,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -27,6 +28,11 @@ public class BaseTest {
         return post(getUrl(path))
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(JSON.toJSONString(form));
+    }
+
+    protected MockHttpServletRequestBuilder getFor(String path) {
+        return get(getUrl(path))
+                .contentType(MediaType.ALL_VALUE);
     }
 
     private String getUrl(String path) {

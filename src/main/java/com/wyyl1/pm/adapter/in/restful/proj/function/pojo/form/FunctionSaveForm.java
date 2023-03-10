@@ -1,4 +1,4 @@
-package com.wyyl1.pm.adapter.in.restful.proj.function.form;
+package com.wyyl1.pm.adapter.in.restful.proj.function.pojo.form;
 
 import lombok.Data;
 

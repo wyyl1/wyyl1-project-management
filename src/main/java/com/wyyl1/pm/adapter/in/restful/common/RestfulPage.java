@@ -1,5 +1,6 @@
-package com.wyyl1.pm.common.page;
+package com.wyyl1.pm.adapter.in.restful.common;
 
+import com.wyyl1.pm.common.page.Page;
 import lombok.Builder;
 import lombok.Getter;
 
