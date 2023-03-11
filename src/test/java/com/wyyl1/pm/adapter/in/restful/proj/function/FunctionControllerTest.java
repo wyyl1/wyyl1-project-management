@@ -36,11 +36,9 @@ class FunctionControllerTest extends BaseTest {
         @DisplayName("保存成功")
         @Test
         void save_success() throws Exception {
-            MvcResult result = mockMvc.perform(postForJson(path, createForm()))
+            mockMvc.perform(postForJson(path, createForm()))
                     .andDo(print()).andExpect(status().isOk())
                     .andReturn();
-
-//            assertThat(result.getResponse().getContentAsString()).isEqualTo("ok");
 
             FunctionCleaner.of(mapper).cleanLastInsert();
         }
@@ -94,12 +92,48 @@ class FunctionControllerTest extends BaseTest {
             }
         }
 
-        @DisplayName("使用无效的查询条件返回错误提示")
+        @DisplayName("使用 platformId 查询返回正常数据")
         @ParameterizedTest
         @CsvSource({
-                "0",
+                "2, 2",
+                "3, 1",
+                "1, 6",
         })
-        void return_error_when_invalid_query_condition(Integer pageNum) throws Exception {
+        void return_success_when_use_platformId(Integer platformId, Integer expectSize) throws Exception {
+            FunctionPageQuery pageQuery = new FunctionPageQuery();
+            pageQuery.setPageNum(1);
+            pageQuery.setPageSize(10);
+            pageQuery.setPlatformId(platformId);
+
+            String sendUrl = path + "?pageNum=" + pageQuery.getPageNum() + "&pageSize=" + pageQuery.getPageSize() + "&platformId=" + pageQuery.getPlatformId();
+            MvcResult result = mockMvc.perform(getFor(sendUrl))
+                    .andDo(print()).andExpect(status().isOk())
+                    .andReturn();
+
+            RestfulPage<JSONObject> page = JSON.parseObject(result.getResponse().getContentAsString(), RestfulPage.class);
+
+            assertThat(page.getPageTotal()).isEqualTo(1);
+            assertThat(page.getRecordTotal()).isEqualTo(expectSize);
+            assertThat(page.getDataList().size()).isEqualTo(expectSize);
+
+            for (JSONObject json : page.getDataList()) {
+                Function function = JSON.parseObject(json.toString(), Function.class);
+                assertThat(function.getId()).isNotNull();
+                assertThat(function.getName()).isNotBlank();
+                assertThat(function.getPlatformId()).isEqualTo(platformId);
+            }
+        }
+
+        @DisplayName("使用无效的 pageNum 查询返回错误提示")
+        @ParameterizedTest
+        @CsvSource({
+                "0, 页码最小值为 1",
+                "-1, 页码最小值为 1",
+                "-82, 页码最小值为 1",
+                "82, 无效的页码：82",
+                "96, 无效的页码：96",
+        })
+        void return_error_when_invalid_pageNum(Integer pageNum, String errMsg) throws Exception {
             FunctionPageQuery pageQuery = new FunctionPageQuery();
             pageQuery.setPageNum(pageNum);
             pageQuery.setPageSize(10);
@@ -107,7 +141,27 @@ class FunctionControllerTest extends BaseTest {
             String sendUrl = path + "?pageNum=" + pageQuery.getPageNum() + "&pageSize=" + pageQuery.getPageSize();
             mockMvc.perform(getFor(sendUrl))
                     .andDo(print()).andExpect(status().isBadRequest())
-                    .andExpect(content().string("页码最小值为1"));
+                    .andExpect(content().string(errMsg));
+        }
+
+        @DisplayName("使用无效的 pageSize 查询返回错误提示")
+        @ParameterizedTest
+        @CsvSource({
+                "0, 每页最小显示数量为 1",
+                "-1, 每页最小显示数量为 1",
+                "-82, 每页最小显示数量为 1",
+                "101, 每页最大显示数量为 100",
+                "962, 每页最大显示数量为 100",
+        })
+        void return_error_when_invalid_pageSize(Integer pageSize, String errMsg) throws Exception {
+            FunctionPageQuery pageQuery = new FunctionPageQuery();
+            pageQuery.setPageNum(1);
+            pageQuery.setPageSize(pageSize);
+
+            String sendUrl = path + "?pageNum=" + pageQuery.getPageNum() + "&pageSize=" + pageQuery.getPageSize();
+            mockMvc.perform(getFor(sendUrl))
+                    .andDo(print()).andExpect(status().isBadRequest())
+                    .andExpect(content().string(errMsg));
         }
     }
 
