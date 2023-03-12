@@ -34,7 +34,7 @@ public class Page<T> {
         this.rowCount = 0;
         if (recordTotal > 0) {
             this.offset = (this.pageNum - 1) * this.pageSize;
-            this.rowCount = Math.min(this.pageNum * this.pageSize, recordTotal);
+            this.rowCount = this.pageSize;
         }
     }
 

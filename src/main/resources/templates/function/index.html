@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>功能列表</title>
+
+    <!-- Google Font: Source Sans Pro -->
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="/plugins/fontawesome-free/css/all.min.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="/dist/css/adminlte.min.css">
+
+    <!-- jsGrid -->
+    <link rel="stylesheet" href="/plugins/jsgrid/jsgrid.min.css">
+    <link rel="stylesheet" href="/plugins/jsgrid/jsgrid-theme.min.css">
+</head>
+
+<body class="hold-transition sidebar-mini">
+<div class="wrapper">
+    <!-- Main Sidebar Container -->
+    <aside th:replace="original :: main-sidebar-container"></aside>
+
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <section th:replace="original :: content-header"></section>
+
+        <!-- Main content -->
+        <section th:fragment="main-content" class="content">
+            <div class="container-fluid">
+                <!-- /.row -->
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">查询条件</h3>
+                                <form id="searchForm" method="get">
+                                    <input id="pageNum" th:value="${page.pageNum}" type="hidden" >
+                                    <input id="pageSize" th:value="${page.pageSize}" type="hidden">
+                                </form>
+
+                                <div class="card-tools">
+                                    <div class="input-group input-group-sm" style="width: 150px;">
+                                        <input type="text" name="table_search" class="form-control float-right" placeholder="功能名称">
+
+                                        <div class="input-group-append">
+                                            <button id="searchBtn" type="button" class="btn btn-default">
+                                                <i class="fas fa-search"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- /.card-header -->
+                            <div class="card-body table-responsive p-0">
+                                <table class="table table-hover text-nowrap">
+                                    <thead>
+                                    <tr>
+                                        <th>功能名称</th>
+                                        <th>功能发起人</th>
+                                        <th>参与人</th>
+                                        <th>平台</th>
+                                        <th>提测时间</th>
+                                        <th>发布时间</th>
+                                        <th>功能状态</th>
+                                        <th>是否延期</th>
+                                        <th>是否同步</th>
+                                        <th>备注</th>
+                                        <th>操作</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody th:each="f, fStat : ${page.dataList}">
+                                    <tr>
+                                        <td th:text="${f.name}"></td>
+                                        <td th:text="${f.originatorId}"></td>
+                                        <td th:text="${f.participantIds}"></td>
+                                        <td th:text="${f.platformId}"></td>
+                                        <td>
+                                            计划 [[${f.plannedTestDate}]] 实际 [[${f.actualTestDate}]]
+                                        </td>
+                                        <td th:text="${f.plannedReleaseDate}"></td>
+                                        <td th:text="${f.status}"></td>
+                                        <td th:text="${f.delayed}"></td>
+                                        <td th:text="${f.delayed}"></td>
+                                        <td th:text="${f.remark}"></td>
+                                        <td>编辑 复制</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <!-- /.card-body -->
+                        </div>
+                        <!-- /.card -->
+                    </div>
+                </div>
+                <!-- /.row -->
+            </div><!-- /.container-fluid -->
+            <div class="jsgrid-pager-container">
+                <div class="jsgrid-pager">
+                    [[${page.pageNum}]] of [[${page.pageTotal}]]
+                    &nbsp;&nbsp;
+                    <span class="jsgrid-pager-nav-button"><a href="javascript:perPage();">上一页</a></span>
+                    <span class="jsgrid-pager-nav-button"><a href="javascript:nextPage();">下一页</a></span>
+                </div>
+            </div>
+        </section>
+        <!-- /.content -->
+    </div>
+    <!-- /.content-wrapper -->
+    <footer th:replace="original :: footer"></footer>
+
+    <!-- Control Sidebar -->
+    <aside th:replace="original :: control-sidebar"></aside>
+    <!-- /.control-sidebar -->
+</div>
+<!-- ./wrapper -->
+
+<!-- jQuery -->
+<script src="/plugins/jquery/jquery.min.js"></script>
+<!-- Bootstrap 4 -->
+<script src="/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<!-- AdminLTE App -->
+<script src="/dist/js/adminlte.min.js"></script>
+<script src="/plugins/jsgrid/jsgrid.min.js"></script>
+
+<script>
+    function perPage() {
+        let pageNum = parseInt($("#pageNum").val());
+        let perPageNum = pageNum - 1;
+
+        if (perPageNum < 1) {
+            alert("已经是第一页了");
+            return;
+        }
+
+        search(perPageNum);
+    }
+
+    function nextPage() {
+        let pageNum = parseInt($("#pageNum").val());
+        let nextPageNum = pageNum + 1;
+        let pageTotal = [[${page.pageTotal}]];
+
+        if (nextPageNum > pageTotal) {
+            alert("已经是最后一页了");
+            return;
+        }
+
+        search(nextPageNum);
+    }
+
+    function search(pageNum) {
+        let url = "/function/?pageNum=" + pageNum + "&pageSize=" + $("#pageSize").val();
+        let onclick = "window.location.href='" + url + "'";
+        $("#searchBtn").attr('onclick', onclick);
+
+
+        $("#searchBtn").click();
+    }
+
+</script>
+
+</body>
+</html>

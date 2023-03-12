@@ -18,7 +18,7 @@ import javax.validation.Valid;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("/function")
+@RequestMapping("/api/function")
 @Slf4j
 public class FunctionController {
 

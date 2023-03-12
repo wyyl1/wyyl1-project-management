@@ -28,10 +28,12 @@ class FunctionControllerTest extends BaseTest {
     @Resource
     private FunctionMapper mapper;
 
+    private String baseUrl = "/api/function";
+
     @DisplayName("保存功能")
     @Nested
     class Save {
-        private final String path = "/function/save/";
+        private final String path = baseUrl + "/save";
 
         @DisplayName("保存成功")
         @Test
@@ -65,7 +67,7 @@ class FunctionControllerTest extends BaseTest {
     @DisplayName("分页查询功能")
     @Nested
     class PageTest {
-        private final String path = "/function/page";
+        private final String path = baseUrl + "/page";
 
         @DisplayName("没有查询条件返回成功")
         @Test
@@ -90,6 +92,30 @@ class FunctionControllerTest extends BaseTest {
                 assertThat(function.getId()).isNotNull();
                 assertThat(function.getName()).isNotBlank();
             }
+        }
+
+        @DisplayName("使用 pageNum pageSize 进行分页")
+        @ParameterizedTest
+        @CsvSource({
+                "1, 10, 1, 9, 9",
+                "1, 2, 5, 9, 2",
+                "2, 2, 5, 9, 2",
+        })
+        void return_success_when_use_pageNum_pageSize(Integer pageNum, Integer pageSize, Integer expectPageTotal, Integer expectRecordTotal, Integer expectDataListSize) throws Exception {
+            FunctionPageQuery pageQuery = new FunctionPageQuery();
+            pageQuery.setPageNum(pageNum);
+            pageQuery.setPageSize(pageSize);
+
+            String sendUrl = path + "?pageNum=" + pageQuery.getPageNum() + "&pageSize=" + pageQuery.getPageSize() + "";
+            MvcResult result = mockMvc.perform(getFor(sendUrl))
+                    .andDo(print()).andExpect(status().isOk())
+                    .andReturn();
+
+            RestfulPage<JSONObject> page = JSON.parseObject(result.getResponse().getContentAsString(), RestfulPage.class);
+
+            assertThat(page.getPageTotal()).isEqualTo(expectPageTotal);
+            assertThat(page.getRecordTotal()).isEqualTo(expectRecordTotal);
+            assertThat(page.getDataList().size()).isEqualTo(expectDataListSize);
         }
 
         @DisplayName("使用 platformId 查询返回正常数据")
@@ -162,6 +188,32 @@ class FunctionControllerTest extends BaseTest {
             mockMvc.perform(getFor(sendUrl))
                     .andDo(print()).andExpect(status().isBadRequest())
                     .andExpect(content().string(errMsg));
+        }
+
+        @DisplayName("pageNum 使用 null 查询返回错误提示")
+        @Test
+        void return_error_when_pageNum_is_null() throws Exception {
+            FunctionPageQuery pageQuery = new FunctionPageQuery();
+            pageQuery.setPageNum(null);
+            pageQuery.setPageSize(10);
+
+            String sendUrl = path + "?pageSize=" + pageQuery.getPageSize();
+            mockMvc.perform(getFor(sendUrl))
+                    .andDo(print()).andExpect(status().isBadRequest())
+                    .andExpect(content().string("页码不能为空"));
+        }
+
+        @DisplayName("pageSize 使用 null 查询返回错误提示")
+        @Test
+        void return_error_when_pageSize_is_null() throws Exception {
+            FunctionPageQuery pageQuery = new FunctionPageQuery();
+            pageQuery.setPageNum(1);
+            pageQuery.setPageSize(null);
+
+            String sendUrl = path + "?pageNum=" + pageQuery.getPageNum();
+            mockMvc.perform(getFor(sendUrl))
+                    .andDo(print()).andExpect(status().isBadRequest())
+                    .andExpect(content().string("每页显示数量不能为空"));
         }
     }
 
