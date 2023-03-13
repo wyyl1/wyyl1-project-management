@@ -31,7 +31,7 @@ class PlatformRepositoryImplTest extends BaseTest {
 
         @DisplayName("检查 id、name 是正确的")
         @ParameterizedTest
-        @CsvSource({"1,腾讯","2,微软","3,Open AI"})
+        @CsvSource({"1,产品","2,服务端","3,测试"})
         void check_id_name(int id, String name) {
             var platform = repository.findAll().stream().filter(p -> p.id() == id).findFirst().get();
 

@@ -10,8 +10,10 @@ public class EntityGeneratorTests {
 
     static final String url = "jdbc:mysql://localhost:3306/project-management?useUnicode=true&characterEncoding=utf8&serverTimezone=GMT%2B8&allowMultiQueries=true";
 
-    // org.platform,proj.function
-    static final String MODEL = "proj.function";
+    // org.platform
+    // org.employee
+    // proj.function
+    static final String MODEL = "org.employee";
 
     @Test
     public void generate() {
@@ -32,7 +34,7 @@ public class EntityGeneratorTests {
             /* 需要生成文件的表 ( 表名称:对应的Entity名称 ) **/
             tables = @Table(
                     value = {
-                            "function:Function"
+                            "employee:Employee"
                     },
                     columns = @Column(value = "gender_man", javaType = Boolean.class)
             ),
