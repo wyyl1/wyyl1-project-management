@@ -23,14 +23,14 @@ public class FunctionVo {
     private String documentLink;
 
     /**
-     * 功能发起人id
+     * 功能发起人花名
      */
-    private Integer originatorId;
+    private String originatorName;
 
     /**
-     * 参与人id列表
+     * 参与人花名列表
      */
-    private String participantIds;
+    private String participantNames;
 
     /**
      * 平台id
@@ -38,9 +38,19 @@ public class FunctionVo {
     private Integer platformId;
 
     /**
+     * 平台名称
+     */
+    private String platformName;
+
+    /**
      * 部门id
      */
     private Integer departmentId;
+
+    /**
+     * 部门名称
+     */
+    private String departmentName;
 
     /**
      * 计划提测日期
@@ -63,9 +73,9 @@ public class FunctionVo {
     private Integer actualReleaseDate;
 
     /**
-     * 功能状态
+     * 功能状态名称
      */
-    private Integer status;
+    private Integer statusName;
 
     /**
      * 已延期
