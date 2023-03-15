@@ -3,7 +3,7 @@ package com.wyyl1.pm.adapter.in.restful.html;
 import com.wyyl1.pm.adapter.in.restful.common.RestfulPage;
 import com.wyyl1.pm.adapter.in.restful.proj.function.FunctionController;
 import com.wyyl1.pm.adapter.in.restful.proj.function.pojo.query.FunctionPageQuery;
-import com.wyyl1.pm.domain.proj.function.pojo.dto.Function;
+import com.wyyl1.pm.adapter.in.restful.proj.function.pojo.vo.FunctionVo;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,7 +20,7 @@ public class FunctionHtml {
 
     @RequestMapping("/")
     public String index(@Valid FunctionPageQuery pageQuery, Model model) {
-        RestfulPage<Function> page = functionController.page(pageQuery);
+        RestfulPage<FunctionVo> page = functionController.page(pageQuery);
         model.addAttribute("title", "功能列表");
         model.addAttribute("page", page);
 

@@ -14,7 +14,7 @@ CREATE TABLE `employee` (
 CREATE TABLE `function` (
   `id` int NOT NULL AUTO_INCREMENT,
   `name` varchar(2000) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '功能名称',
-  `document_link` varchar(1000) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '文档链接',
+  `document_link` varchar(1000) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL DEFAULT '' COMMENT '文档链接',
   `originator_id` int NOT NULL COMMENT '功能发起人id',
   `participant_ids` varchar(2000) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '参与人id列表',
   `platform_id` int NOT NULL COMMENT '平台id',
@@ -31,7 +31,7 @@ CREATE TABLE `function` (
   `last_updated_at` bigint DEFAULT NULL,
   `last_updated_by` int DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin COMMENT='功能';
+) ENGINE=InnoDB AUTO_INCREMENT=65 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin COMMENT='功能';
 
 CREATE TABLE `platform` (
   `id` int NOT NULL,

@@ -10,10 +10,10 @@ COMMIT;
 -- ----------------------------
 -- Records of platform
 -- ----------------------------
-insert into project-management-test.platform (id, name)
-values  (1, '产品'),
-    (2, '服务端'),
-    (3, '测试');
+insert into platform (id, name)
+values  (1, 'Web'),
+    (2, '安卓'),
+    (3, '苹果');
 
 -- ----------------------------
 -- Records of function

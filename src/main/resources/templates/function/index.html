@@ -74,15 +74,16 @@
                                     </thead>
                                     <tbody th:each="f, fStat : ${page.dataList}">
                                     <tr>
-                                        <td th:text="${f.name}"></td>
-                                        <td th:text="${f.originatorId}"></td>
-                                        <td th:text="${f.participantIds}"></td>
-                                        <td th:text="${f.platformId}"></td>
+                                        <td th:if="${f.showDocumentLink}"><a th:href="${f.documentLink}" th:text="${f.name}"></a></td>
+                                        <td th:unless="${f.showDocumentLink}" th:text="${f.name}"></td>
+                                        <td th:text="${f.originatorName}"></td>
+                                        <td th:text="${f.participantNames}"></td>
+                                        <td th:text="${f.platformName}"></td>
                                         <td>
                                             计划 [[${f.plannedTestDate}]] 实际 [[${f.actualTestDate}]]
                                         </td>
                                         <td th:text="${f.plannedReleaseDate}"></td>
-                                        <td th:text="${f.status}"></td>
+                                        <td th:text="${f.statusName}"></td>
                                         <td th:text="${f.delayed}"></td>
                                         <td th:text="${f.delayed}"></td>
                                         <td th:text="${f.remark}"></td>

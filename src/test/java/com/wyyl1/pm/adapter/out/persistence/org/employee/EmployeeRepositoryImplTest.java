@@ -5,11 +5,13 @@ import com.wyyl1.pm.domain.org.employee.EmployeeRepository;
 import com.wyyl1.pm.domain.org.employee.dto.Employee;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import test.BaseTest;
 
 import javax.annotation.Resource;
+import java.util.List;
 import java.util.Map;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
@@ -80,6 +82,22 @@ class EmployeeRepositoryImplTest extends BaseTest {
             assertThat(employees.size()).isEqualTo(expectedSize);
 
             employees.forEach((id, employee) -> assertThat(employee).isEqualTo(employeesForDB.get(id)));
+        }
+
+        @DisplayName("id集合为空时，返回空的Map")
+        @Test
+        void return_empty_map_when_using_empty_ids() {
+            Map<Integer, Employee> employees = repository.employeesFor(List.of());
+
+            assertThat(employees.size()).isEqualTo(0);
+        }
+
+        @DisplayName("id集合为 null 时，返回空的Map")
+        @Test
+        void return_empty_map_when_using_null_ids() {
+            Map<Integer, Employee> employees = repository.employeesFor(null);
+
+            assertThat(employees.size()).isEqualTo(0);
         }
 
     }

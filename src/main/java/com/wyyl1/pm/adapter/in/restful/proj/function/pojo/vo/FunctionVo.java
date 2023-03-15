@@ -23,6 +23,11 @@ public class FunctionVo {
     private String documentLink;
 
     /**
+     * true 显示文档链接
+     */
+    private Boolean showDocumentLink;
+
+    /**
      * 功能发起人花名
      */
     private String originatorName;
@@ -75,7 +80,7 @@ public class FunctionVo {
     /**
      * 功能状态名称
      */
-    private Integer statusName;
+    private String statusName;
 
     /**
      * 已延期

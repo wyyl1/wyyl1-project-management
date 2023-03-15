@@ -1,12 +1,17 @@
 package com.wyyl1.pm.adapter.in.restful.proj.function;
 
 import com.wyyl1.pm.adapter.in.restful.common.RestfulPage;
+import com.wyyl1.pm.adapter.in.restful.proj.function.creator.FunctionVosCreator;
 import com.wyyl1.pm.adapter.in.restful.proj.function.pojo.form.FunctionSaveForm;
 import com.wyyl1.pm.adapter.in.restful.proj.function.pojo.query.FunctionPageQuery;
+import com.wyyl1.pm.adapter.in.restful.proj.function.pojo.vo.FunctionVo;
 import com.wyyl1.pm.application.proj.function.FunctionService;
+import com.wyyl1.pm.common.page.Page;
 import com.wyyl1.pm.common.page.PageQuery;
 import com.wyyl1.pm.common.util.JsonFormatter;
 import com.wyyl1.pm.common.util.Time;
+import com.wyyl1.pm.domain.org.employee.EmployeeRepository;
+import com.wyyl1.pm.domain.org.platform.PlatformRepository;
 import com.wyyl1.pm.domain.proj.function.pojo.dto.Function;
 import com.wyyl1.pm.domain.proj.function.pojo.query.FunctionListQuery;
 import lombok.AllArgsConstructor;
@@ -23,6 +28,8 @@ import javax.validation.Valid;
 public class FunctionController {
 
     private FunctionService service;
+    private EmployeeRepository employeeRepository;
+    private PlatformRepository platformRepository;
 
     @PostMapping("/save")
     public void save(@RequestBody FunctionSaveForm form) {
@@ -40,11 +47,15 @@ public class FunctionController {
 
     @GetMapping("/page")
     @ResponseBody
-    public RestfulPage<Function> page(@Valid FunctionPageQuery pageQuery) {
+    public RestfulPage<FunctionVo> page(@Valid FunctionPageQuery pageQuery) {
         FunctionListQuery functionListQuery = new FunctionListQuery();
         BeanUtils.copyProperties(pageQuery, functionListQuery);
 
-        return RestfulPage.of(service.page(functionListQuery, PageQuery.of(pageQuery.getPageNum(), pageQuery.getPageSize())));
+        Page<Function> page = service.page(functionListQuery, PageQuery.of(pageQuery.getPageNum(), pageQuery.getPageSize()));
+        Page<FunctionVo> result = Page.of(page.pageNum(), page.pageSize(), page.recordTotal());
+        result.dataList(new FunctionVosCreator(page.dataList(), employeeRepository, platformRepository).of());
+
+        return RestfulPage.of(result);
     }
 
 }
