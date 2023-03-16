@@ -5,6 +5,7 @@ import com.wyyl1.pm.domain.org.employee.EmployeeRepository;
 import com.wyyl1.pm.domain.org.employee.dto.Employee;
 import com.wyyl1.pm.domain.org.platform.PlatformRepository;
 import com.wyyl1.pm.domain.org.platform.dto.Platform;
+import com.wyyl1.pm.domain.proj.function.FunctionStatusEnum;
 import com.wyyl1.pm.domain.proj.function.pojo.dto.Function;
 import org.springframework.beans.BeanUtils;
 
@@ -30,6 +31,7 @@ public class FunctionVosCreator {
         addEmployeeNameToResult();
         addShowDocumentLinkToResult();
         addPlatformName();
+        addStatusName();
 
         return result;
     }
@@ -82,4 +84,11 @@ public class FunctionVosCreator {
         }
     }
 
+    private void addStatusName() {
+        for (int i = 0; i < result.size(); i++) {
+            FunctionVo vo = result.get(i);
+            Function f = functions.get(i);
+            vo.setStatusName(FunctionStatusEnum.of(f.getStatus()).getName());
+        }
+    }
 }

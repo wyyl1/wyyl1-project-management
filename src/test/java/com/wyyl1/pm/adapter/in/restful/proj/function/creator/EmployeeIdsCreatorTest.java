@@ -19,14 +19,14 @@ class EmployeeIdsCreatorTest {
             3, List.of(13, 5, 6, 7, 8, 1, 2)
     );
 
-    @DisplayName("根据不同参数输出正确的结果")
+    @DisplayName("根据不同参数返回正确的结果")
     @ParameterizedTest
     @CsvSource(value = {
             "1; [\"participantIds\":\"1\"},{\"originatorId\":1}]",
             "2; [{\"originatorId\":1,\"participantIds\":\"1,2\"},{\"originatorId\":2,\"participantIds\":\"1\"}]",
             "3; [{\"originatorId\":5,\"participantIds\":\"1,2\"},{\"originatorId\":8,\"participantIds\":\"8,7,6,5\"},{\"originatorId\":13,\"participantIds\":\",13,6,7,1\"}]"
     }, delimiter = ';')
-    void test1(Integer key, String jsonArray) {
+    void return_correct_result_when_input_different_parameters(Integer key, String jsonArray) {
         List<Function> functions = JSON.parseArray(jsonArray, Function.class);
 
         List<Integer> employeeIds = EmployeeIdsCreator.allNoDuplicateIds(functions);
