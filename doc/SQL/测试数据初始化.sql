@@ -1,3 +1,9 @@
+TRUNCATE TABLE department;
+TRUNCATE TABLE employee;
+-- function 需要手动删除
+-- TRUNCATE TABLE function;
+TRUNCATE TABLE platform;
+
 -- ----------------------------
 -- Records of department
 -- ----------------------------

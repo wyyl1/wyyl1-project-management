@@ -1,4 +1,4 @@
-package com.wyyl1.pm.adapter.in.restful.html;
+package com.wyyl1.pm.adapter.in.restful.html.function;
 
 import com.wyyl1.pm.adapter.in.restful.common.RestfulPage;
 import com.wyyl1.pm.adapter.in.restful.proj.function.FunctionController;
@@ -14,7 +14,7 @@ import javax.validation.Valid;
 @Controller
 @RequestMapping("/function")
 @AllArgsConstructor
-public class FunctionHtml {
+public class IndexHtml {
 
     private FunctionController functionController;
 
