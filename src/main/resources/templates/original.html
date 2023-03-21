@@ -44,13 +44,13 @@
                         </a>
                         <ul class="nav nav-treeview">
                             <li class="nav-item">
-                                <a href="/function/?pageNum=1&pageSize=2" class="nav-link">
+                                <a href="/function/index?pageNum=1&pageSize=2" class="nav-link">
                                     <i class="far fa-circle nav-icon"></i>
                                     <p>功能列表</p>
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="/function/add/" class="nav-link active">
+                                <a href="/function/add/" class="nav-link">
                                     <i class="far fa-circle nav-icon"></i>
                                     <p>添加功能</p>
                                 </a>
@@ -154,6 +154,16 @@
     <!-- /.control-sidebar -->
 </div>
 <!-- ./wrapper -->
+
+<div th:fragment="importCommonJs">
+    <!-- jQuery -->
+    <script src="/plugins/jquery/jquery.min.js"></script>
+    <!-- Bootstrap 4 -->
+    <script src="/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <!-- AdminLTE App -->
+    <script src="/dist/js/adminlte.min.js"></script>
+    <script src="/js/common.js"></script>
+</div>
 
 </body>
 </html>

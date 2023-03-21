@@ -18,7 +18,7 @@ public class IndexHtml {
 
     private FunctionController functionController;
 
-    @RequestMapping("/")
+    @RequestMapping("/index")
     public String index(@Valid FunctionPageQuery pageQuery, Model model) {
         RestfulPage<FunctionVo> page = functionController.page(pageQuery);
         model.addAttribute("title", "功能列表");
